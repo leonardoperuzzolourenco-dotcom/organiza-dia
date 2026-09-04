@@ -1,0 +1,10 @@
+{
+  "name": "OrganizaDia Web",
+  "short_name": "OrganizaDia",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5f7f8",
+  "theme_color": "#0f4c5c",
+  "description": "Tarefas diárias, ações e progresso.",
+  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
