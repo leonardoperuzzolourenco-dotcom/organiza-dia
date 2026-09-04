@@ -4,9 +4,36 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f4c5c">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
 <title>OrganizaDia</title>
 <style>
-:root{--bg:#f5f7f8;--panel:#fff;--text:#182126;--muted:#6b7780;--border:#dfe7ea;--primary:#0f4c5c;--primary2:#14697d;--green:#18794e;--red:#b42318;--shadow:0 14px 40px rgba(30,54,62,.12)}*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}button,input{font:inherit}.hidden{display:none!important}.auth-wrap{min-height:100%;display:grid;place-items:center;padding:24px;background:linear-gradient(135deg,#eef6f8,#f8fbfb)}.auth-card{width:min(440px,100%);background:var(--panel);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow);padding:26px}.brand{display:flex;gap:12px;align-items:center;margin-bottom:20px}.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--primary2));display:grid;place-items:center;color:#fff;font-weight:800}.brand h1{font-size:22px;margin:0}.brand p{margin:2px 0 0;color:var(--muted);font-size:13px}.field{margin:12px 0}.field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px}.input{width:100%;border:1px solid var(--border);border-radius:11px;padding:11px 12px;min-height:44px}.row{display:flex;gap:9px;margin-top:14px}.btn{flex:1;border:1px solid var(--border);border-radius:11px;padding:11px 14px;background:#fff;font-weight:700;cursor:pointer}.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}.btn:hover{filter:brightness(.98)}.msg{margin-top:12px;font-size:13px;color:var(--muted);line-height:1.45}.msg.error{color:var(--red)}.app-shell{height:100%;position:relative}.app-frame{width:100%;height:100%;border:0;display:block;background:#fff}.sync-pill{position:fixed;left:12px;bottom:12px;z-index:9999;background:rgba(24,33,38,.92);color:#fff;border-radius:999px;padding:8px 10px;font-size:12px;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(0,0,0,.18)}.dot{width:8px;height:8px;border-radius:50%;background:#e0a11a}.dot.ok{background:#43b581}.sync-pill button{border:0;background:transparent;color:#fff;text-decoration:underline;cursor:pointer;font-size:12px;padding:0}@media(max-width:640px){.sync-pill{left:8px;bottom:8px;max-width:calc(100% - 16px)}}
+:root{--bg:#f5f7f8;--panel:#fff;--text:#182126;--muted:#6b7780;--border:#dfe7ea;--primary:#0f4c5c;--primary2:#14697d;--green:#18794e;--red:#b42318;--orange:#b35b00;--shadow:0 14px 40px rgba(30,54,62,.12)}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}.hidden{display:none!important}
+.auth-wrap{min-height:100%;display:grid;place-items:center;padding:24px;background:linear-gradient(135deg,#eef6f8,#f8fbfb)}
+.auth-card{width:min(440px,100%);background:var(--panel);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow);padding:26px}
+.brand{display:flex;gap:12px;align-items:center;margin-bottom:20px}.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--primary2));display:grid;place-items:center;color:#fff;font-weight:800}
+.brand h1{font-size:22px;margin:0}.brand p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.field{margin:12px 0}.field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px}
+.input,.select,.textarea{width:100%;border:1px solid var(--border);border-radius:11px;padding:11px 12px;min-height:44px;background:#fff;color:var(--text)}
+.textarea{min-height:82px;resize:vertical}.row{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);border-radius:11px;padding:10px 13px;background:#fff;font-weight:700;cursor:pointer;color:var(--text)}
+.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}.btn-green{background:var(--green);color:#fff;border-color:var(--green)}.btn-danger{background:#fff0ef;color:var(--red);border-color:#ffd5d1}.btn:hover{filter:brightness(.98)}
+.auth-card .row .btn{flex:1}.msg{margin-top:12px;font-size:13px;color:var(--muted);line-height:1.45}.msg.error{color:var(--red)}
+.app-shell{height:100%;position:relative}.app-frame{width:100%;height:100%;border:0;display:block;background:#fff}
+.sync-pill{position:fixed;left:12px;bottom:12px;z-index:9999;background:rgba(24,33,38,.94);color:#fff;border-radius:14px;padding:8px 10px;font-size:12px;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);flex-wrap:wrap}
+.dot{width:8px;height:8px;border-radius:50%;background:#e0a11a}.dot.ok{background:#43b581}
+.sync-pill button{border:0;background:rgba(255,255,255,.12);color:#fff;border-radius:8px;cursor:pointer;font-size:12px;padding:5px 7px}.sync-pill button:hover{background:rgba(255,255,255,.2)}
+dialog{border:0;border-radius:18px;padding:0;width:min(620px,calc(100% - 24px));max-height:88vh;overflow:auto;box-shadow:0 24px 70px rgba(0,0,0,.25);color:var(--text)}
+dialog::backdrop{background:rgba(10,25,30,.45);backdrop-filter:blur(3px)}
+.modal-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;position:sticky;top:0;background:#fff;z-index:2}
+.modal-head h2{font-size:18px;margin:0}.modal-head p{font-size:12px;color:var(--muted);margin:3px 0 0}.close{border:0;background:#eef2f3;width:34px;height:34px;border-radius:50%;font-size:19px;cursor:pointer}
+.modal-body{padding:18px 20px}.modal-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;position:sticky;bottom:0;background:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.notice{background:#eef7f8;border:1px solid #d5e9ed;border-radius:11px;padding:11px 12px;font-size:12px;color:#315963;margin-bottom:12px}
+.reminder-list{display:grid;gap:8px;margin-top:16px}.reminder-item{border:1px solid var(--border);border-radius:12px;padding:11px 12px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+.reminder-title{font-weight:750;font-size:13px}.reminder-meta{font-size:11px;color:var(--muted);margin-top:3px}.status{font-weight:700}.status.pending{color:var(--orange)}.status.sent{color:var(--green)}.status.failed{color:var(--red)}
+@media(max-width:640px){.sync-pill{left:8px;right:8px;bottom:8px}.grid2{grid-template-columns:1fr}.modal-foot .btn{flex:1}.sync-pill #syncText{flex:1}}
 </style>
 </head>
 <body>
@@ -19,23 +46,60 @@
     <div id="message" class="msg">Use a mesma conta no computador e no celular para ver as mesmas tarefas.</div>
   </div>
 </section>
+
 <section id="app" class="app-shell hidden">
   <iframe id="frame" class="app-frame" title="OrganizaDia"></iframe>
-  <div class="sync-pill"><span id="syncDot" class="dot"></span><span id="syncText">Conectando…</span><button id="logout">Sair</button></div>
+  <div class="sync-pill">
+    <span id="syncDot" class="dot"></span><span id="syncText">Conectando…</span>
+    <button id="notifications">Ativar notificações</button>
+    <button id="reminders">Lembretes</button>
+    <button id="logout">Sair</button>
+  </div>
 </section>
+
+<dialog id="reminderDialog">
+  <div class="modal-head">
+    <div><h2>Lembretes no celular</h2><p>Escolha uma tarefa e defina quando deseja receber o aviso.</p></div>
+    <button id="closeReminder" class="close" aria-label="Fechar">×</button>
+  </div>
+  <div class="modal-body">
+    <div id="pushNotice" class="notice">Para receber avisos neste aparelho, ative as notificações.</div>
+    <div class="field"><label for="reminderTask">Tarefa</label><select id="reminderTask" class="select"></select></div>
+    <div class="grid2">
+      <div class="field"><label for="reminderDate">Data do lembrete</label><input id="reminderDate" class="input" type="date"></div>
+      <div class="field"><label for="reminderTime">Horário</label><input id="reminderTime" class="input" type="time"></div>
+    </div>
+    <div class="field"><label for="reminderMessage">Mensagem (opcional)</label><textarea id="reminderMessage" class="textarea" maxlength="300" placeholder="Ex.: Não esquecer os documentos e sair 30 minutos antes."></textarea></div>
+    <div class="row">
+      <button id="saveReminder" class="btn btn-primary">Salvar lembrete</button>
+      <button id="testPush" class="btn">Testar notificação</button>
+    </div>
+    <div id="reminderFeedback" class="msg"></div>
+    <div id="reminderList" class="reminder-list"></div>
+  </div>
+  <div class="modal-foot"><button id="closeReminderBottom" class="btn">Fechar</button></div>
+</dialog>
+
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
 const SUPABASE_URL='https://vgagtjcqokqveedbrsyl.supabase.co';
 const SUPABASE_KEY='sb_publishable_IOtn-7mF82sBAMPT9U9okA_HYUD2Gm8';
 const supabase=createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const STORAGE_KEY='organizaDiaWeb.v1';
 const $=id=>document.getElementById(id);
 let user=null,lastLocal='',lastRemoteTime='',syncTimer=null,pullTimer=null,appLoaded=false,applyingRemote=false;
+
 function setMsg(text,error=false){$('message').textContent=text;$('message').className='msg'+(error?' error':'');}
 function setSync(text,ok=false){$('syncText').textContent=text;$('syncDot').className='dot'+(ok?' ok':'');}
+function setReminderFeedback(text,error=false){$('reminderFeedback').textContent=text;$('reminderFeedback').className='msg'+(error?' error':'');}
 function defaultState(){return {version:1,tasks:[],settings:{whatsappNumber:''}}}
 function localState(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'null')||defaultState()}catch{return defaultState()}}
 function normalizedString(obj){try{return JSON.stringify(obj)}catch{return JSON.stringify(defaultState())}}
+function todayISO(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function fmtDateTime(iso){try{return new Intl.DateTimeFormat('pt-BR',{dateStyle:'short',timeStyle:'short'}).format(new Date(iso));}catch{return iso||''}}
+function escapeHtml(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
 async function saveRemote(state){
   if(!user||applyingRemote)return;
   setSync('Salvando…');
@@ -45,7 +109,7 @@ async function saveRemote(state){
   lastRemoteTime=data?.updated_at||now;lastLocal=normalizedString(state);setSync('Sincronizado',true);
 }
 async function fetchRemote(){
-  if(!user)return;
+  if(!user)return null;
   const {data,error}=await supabase.from('organiza_state').select('state,updated_at').eq('user_id',user.id).maybeSingle();
   if(error){console.error(error);setSync('Erro ao sincronizar');return null;}
   return data;
@@ -53,23 +117,17 @@ async function fetchRemote(){
 async function startSync(){
   const remote=await fetchRemote();
   const local=localState();
-  if(!remote){
-    await saveRemote(local);
-  }else{
+  if(!remote){await saveRemote(local);}
+  else{
     const remoteString=normalizedString(remote.state||defaultState());
     lastRemoteTime=remote.updated_at||'';
-    if(remoteString!==normalizedString(local)){
-      applyingRemote=true;localStorage.setItem(STORAGE_KEY,remoteString);applyingRemote=false;
-    }
+    if(remoteString!==normalizedString(local)){applyingRemote=true;localStorage.setItem(STORAGE_KEY,remoteString);applyingRemote=false;}
     lastLocal=remoteString;
   }
   if(!appLoaded){$('frame').src='./app.html';appLoaded=true;}
   $('auth').classList.add('hidden');$('app').classList.remove('hidden');setSync('Sincronizado',true);
   clearInterval(syncTimer);clearInterval(pullTimer);
-  syncTimer=setInterval(async()=>{
-    const current=normalizedString(localState());
-    if(current!==lastLocal)await saveRemote(JSON.parse(current));
-  },900);
+  syncTimer=setInterval(async()=>{const current=normalizedString(localState());if(current!==lastLocal)await saveRemote(JSON.parse(current));},900);
   pullTimer=setInterval(async()=>{
     const r=await fetchRemote();if(!r)return;
     if(r.updated_at&&r.updated_at!==lastRemoteTime){
@@ -81,11 +139,128 @@ async function startSync(){
       lastRemoteTime=r.updated_at;setSync('Sincronizado',true);
     }
   },4000);
+  refreshNotificationButton();
 }
 async function handleSession(session){
   user=session?.user||null;
   if(user){await startSync();}else{$('app').classList.add('hidden');$('auth').classList.remove('hidden');}
 }
+
+async function swRegistration(){
+  if(!('serviceWorker' in navigator)) throw new Error('Este navegador não oferece suporte a notificações push.');
+  await navigator.serviceWorker.register('./sw.js');
+  return navigator.serviceWorker.ready;
+}
+function b64ToUint8Array(base64){
+  const padding='='.repeat((4-base64.length%4)%4);
+  const base64Safe=(base64+padding).replace(/-/g,'+').replace(/_/g,'/');
+  const raw=atob(base64Safe);
+  return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)));
+}
+function isIos(){return /iphone|ipad|ipod/i.test(navigator.userAgent);}
+function isStandalone(){return window.matchMedia?.('(display-mode: standalone)').matches||window.navigator.standalone===true;}
+
+async function getPushSubscription(){
+  if(!('PushManager' in window)) return null;
+  try{const reg=await swRegistration();return await reg.pushManager.getSubscription();}catch{return null;}
+}
+async function refreshNotificationButton(){
+  const btn=$('notifications');
+  if(!('Notification' in window)||!('PushManager' in window)){btn.textContent='Notificações indisponíveis';return;}
+  const sub=await getPushSubscription();
+  btn.textContent=(Notification.permission==='granted'&&sub)?'Notificações ✓':'Ativar notificações';
+}
+async function enableNotifications(){
+  if(!user) return false;
+  if(!('Notification' in window)||!('PushManager' in window)){
+    alert('Este navegador não oferece suporte a notificações push. Tente o Chrome/Edge atualizado no Android ou instale o OrganizaDia na Tela de Início do iPhone.');
+    return false;
+  }
+  if(isIos()&&!isStandalone()){
+    alert('No iPhone/iPad, primeiro adicione o OrganizaDia à Tela de Início pelo menu Compartilhar. Depois abra pelo ícone instalado e ative as notificações.');
+    return false;
+  }
+  let permission=Notification.permission;
+  if(permission!=='granted') permission=await Notification.requestPermission();
+  if(permission!=='granted'){alert('A permissão de notificações não foi concedida.');return false;}
+  const reg=await swRegistration();
+  let sub=await reg.pushManager.getSubscription();
+  if(!sub){
+    const {data:publicKey,error:keyError}=await supabase.rpc('get_push_public_key');
+    if(keyError||!publicKey){console.error(keyError);alert('A configuração de notificações ainda está sendo preparada. Tente novamente em alguns segundos.');return false;}
+    sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64ToUint8Array(publicKey)});
+  }
+  const j=sub.toJSON();
+  const {error}=await supabase.from('push_subscriptions').upsert({
+    user_id:user.id,endpoint:sub.endpoint,p256dh:j.keys?.p256dh||'',auth:j.keys?.auth||'',
+    device_name:(navigator.userAgent||'Dispositivo').slice(0,240),updated_at:new Date().toISOString()
+  },{onConflict:'user_id,endpoint'});
+  if(error){console.error(error);alert('Não foi possível registrar este aparelho para notificações.');return false;}
+  await refreshNotificationButton();
+  $('pushNotice').textContent='Notificações ativas neste aparelho. Você pode fechar o OrganizaDia e ainda receber os lembretes.';
+  return true;
+}
+
+function currentTasks(){return Array.isArray(localState().tasks)?localState().tasks:[];}
+function taskIsDone(t){return Array.isArray(t.actions)&&t.actions.length>0&&t.actions.every(a=>a.status==='completed');}
+function fillTaskOptions(){
+  const tasks=currentTasks().filter(t=>!taskIsDone(t));
+  $('reminderTask').innerHTML=tasks.length?tasks.map(t=>`<option value="${escapeHtml(t.id)}">${escapeHtml(t.title)}</option>`).join(''):'<option value="">Nenhuma tarefa pendente</option>';
+  const first=tasks[0];
+  $('reminderDate').value=first?.date||todayISO();
+  if(!$('reminderTime').value) $('reminderTime').value='09:00';
+}
+async function renderReminders(){
+  if(!user)return;
+  const {data,error}=await supabase.from('task_reminders').select('id,task_ref,title,message,remind_at,status,last_error').eq('user_id',user.id).order('remind_at',{ascending:true}).limit(30);
+  if(error){console.error(error);$('reminderList').innerHTML='<div class="msg error">Não foi possível carregar os lembretes.</div>';return;}
+  if(!data?.length){$('reminderList').innerHTML='<div class="msg">Nenhum lembrete agendado.</div>';return;}
+  const statusLabel={pending:'Agendado',sent:'Enviado',failed:'Falhou',cancelled:'Cancelado'};
+  $('reminderList').innerHTML=data.map(r=>`<div class="reminder-item">
+    <div><div class="reminder-title">${escapeHtml(r.title)}</div><div class="reminder-meta">${fmtDateTime(r.remind_at)} · <span class="status ${escapeHtml(r.status)}">${statusLabel[r.status]||r.status}</span>${r.last_error?` · ${escapeHtml(r.last_error)}`:''}</div></div>
+    <button class="btn btn-danger delete-reminder" data-id="${escapeHtml(r.id)}">Excluir</button>
+  </div>`).join('');
+}
+async function openReminders(){
+  fillTaskOptions();
+  const sub=await getPushSubscription();
+  $('pushNotice').textContent=(Notification.permission==='granted'&&sub)
+    ?'Notificações ativas neste aparelho. Os avisos podem chegar mesmo com o site fechado.'
+    :'Para receber neste aparelho, clique em “Ativar notificações” na barra inferior ou use “Testar notificação”.';
+  setReminderFeedback('');
+  await renderReminders();
+  $('reminderDialog').showModal();
+}
+async function saveReminder(){
+  if(!user)return;
+  const task=currentTasks().find(t=>t.id===$('reminderTask').value);
+  if(!task){setReminderFeedback('Selecione uma tarefa.',true);return;}
+  const date=$('reminderDate').value,time=$('reminderTime').value;
+  if(!date||!time){setReminderFeedback('Informe a data e o horário.',true);return;}
+  const when=new Date(`${date}T${time}:00`);
+  if(Number.isNaN(when.getTime())){setReminderFeedback('Data ou horário inválido.',true);return;}
+  if(when.getTime()<=Date.now()){setReminderFeedback('Escolha um horário futuro.',true);return;}
+  const message=$('reminderMessage').value.trim()||`Lembrete: ${task.title}`;
+  const {error}=await supabase.from('task_reminders').upsert({
+    user_id:user.id,task_ref:task.id,title:task.title,message,remind_at:when.toISOString(),
+    status:'pending',attempts:0,sent_at:null,last_error:null,updated_at:new Date().toISOString()
+  },{onConflict:'user_id,task_ref'});
+  if(error){console.error(error);setReminderFeedback('Não foi possível salvar o lembrete: '+error.message,true);return;}
+  setReminderFeedback('Lembrete salvo.');$('reminderMessage').value='';await renderReminders();
+}
+async function testPush(){
+  const ok=await enableNotifications();if(!ok)return;
+  const when=new Date(Date.now()+65000);
+  const ref='push-test-'+Date.now();
+  const {error}=await supabase.from('task_reminders').insert({
+    user_id:user.id,task_ref:ref,title:'Teste de notificação',message:'Teste do OrganizaDia: as notificações push estão funcionando.',
+    remind_at:when.toISOString(),status:'pending',attempts:0
+  });
+  if(error){console.error(error);setReminderFeedback('Não foi possível agendar o teste.',true);return;}
+  setReminderFeedback('Teste agendado. O aviso deve chegar em cerca de 1 a 2 minutos.');
+  await renderReminders();
+}
+
 $('login').addEventListener('click',async()=>{
   const email=$('email').value.trim(),password=$('password').value;
   if(!email||!password){setMsg('Informe e-mail e senha.',true);return;}
@@ -100,9 +275,26 @@ $('signup').addEventListener('click',async()=>{
   setMsg('Criando conta…');
   const {data,error}=await supabase.auth.signUp({email,password});
   if(error){setMsg('Não foi possível criar a conta: '+error.message,true);return;}
-  if(data.session){await handleSession(data.session);}else{setMsg('Conta criada. Confira seu e-mail e confirme o cadastro; depois volte aqui e clique em Entrar.');}
+  if(data.session){await handleSession(data.session);}else{setMsg('Conta criada. Confira seu e-mail e confirme o cadastro; depois volte e clique em Entrar.');}
 });
 $('logout').addEventListener('click',async()=>{clearInterval(syncTimer);clearInterval(pullTimer);await supabase.auth.signOut();location.reload();});
+$('notifications').addEventListener('click',enableNotifications);
+$('reminders').addEventListener('click',openReminders);
+$('saveReminder').addEventListener('click',saveReminder);
+$('testPush').addEventListener('click',testPush);
+$('closeReminder').addEventListener('click',()=>$('reminderDialog').close());
+$('closeReminderBottom').addEventListener('click',()=>$('reminderDialog').close());
+$('reminderTask').addEventListener('change',()=>{
+  const task=currentTasks().find(t=>t.id===$('reminderTask').value);
+  if(task?.date)$('reminderDate').value=task.date;
+});
+$('reminderList').addEventListener('click',async e=>{
+  const btn=e.target.closest('.delete-reminder');if(!btn)return;
+  const {error}=await supabase.from('task_reminders').delete().eq('id',btn.dataset.id).eq('user_id',user.id);
+  if(error){setReminderFeedback('Não foi possível excluir o lembrete.',true);return;}
+  setReminderFeedback('Lembrete excluído.');await renderReminders();
+});
+
 supabase.auth.onAuthStateChange((_event,session)=>{if(session?.user&&!user)handleSession(session);});
 const {data:{session}}=await supabase.auth.getSession();await handleSession(session);
 if('serviceWorker' in navigator&&location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(console.warn);
