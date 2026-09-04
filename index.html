@@ -1,442 +1,111 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#0f4c5c" />
-  <meta name="description" content="OrganizaDia Web — tarefas, ações e progresso." />
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" href="icon.svg" type="image/svg+xml" />
-  <title>OrganizaDia Web</title>
-  <style>
-    :root{
-      --bg:#f5f7f8; --panel:#ffffff; --panel-soft:#f9fbfb; --text:#182126; --muted:#6b7780;
-      --border:#dfe7ea; --primary:#0f4c5c; --primary-2:#14697d; --primary-soft:#eaf4f6;
-      --green:#18794e; --green-soft:#ecf8f1; --orange:#b35b00; --orange-soft:#fff4e8;
-      --blue:#2457c5; --blue-soft:#edf3ff; --red:#b42318; --red-soft:#fff0ef;
-      --shadow:0 10px 30px rgba(30,54,62,.08); --radius:16px; --radius-sm:11px;
-    }
-    *{box-sizing:border-box}
-    html{color-scheme:light}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.45}
-    button,input,select,textarea{font:inherit}
-    button{cursor:pointer}
-    .app{min-height:100vh}
-    .topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
-    .topbar-inner{max-width:1440px;margin:auto;padding:18px 24px;display:flex;align-items:center;gap:18px;justify-content:space-between}
-    .brand{display:flex;align-items:center;gap:12px;min-width:0}
-    .logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary-2));display:grid;place-items:center;color:white;font-weight:800;box-shadow:0 6px 18px rgba(15,76,92,.22)}
-    .brand h1{font-size:22px;margin:0;letter-spacing:-.5px}.brand p{margin:1px 0 0;color:var(--muted);font-size:12px}
-    .top-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-    .btn{border:1px solid transparent;border-radius:10px;padding:10px 14px;min-height:40px;background:#fff;color:var(--text);font-weight:650;transition:.16s ease;display:inline-flex;align-items:center;justify-content:center;gap:8px}
-    .btn:hover{transform:translateY(-1px)}
-    .btn:focus-visible,.icon-btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(20,105,125,.22);outline-offset:2px}
-    .btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-2)}
-    .btn-soft{background:var(--primary-soft);color:var(--primary);border-color:#d3e8ed}
-    .btn-green{background:var(--green);color:white}.btn-danger{background:var(--red-soft);color:var(--red);border-color:#ffd8d4}
-    .btn-ghost{background:#fff;border-color:var(--border)}
-    .btn-sm{padding:7px 10px;min-height:34px;font-size:13px}
-    .container{max-width:1440px;margin:0 auto;padding:20px 24px 36px}
-    .panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
-    .filters{padding:16px;margin-bottom:14px}
-    .filter-grid{display:grid;grid-template-columns:150px minmax(180px,1fr) auto;gap:12px;align-items:end}
-    .field label,.label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px}
-    .input,.select,.textarea{width:100%;border:1px solid var(--border);border-radius:10px;padding:10px 11px;background:#fff;color:var(--text);min-height:40px}
-    .textarea{min-height:110px;resize:vertical}
-    .filter-actions{display:flex;gap:8px;flex-wrap:wrap}
-    .status-filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
-    .check-chip{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;background:var(--panel-soft);border:1px solid var(--border);font-size:13px;font-weight:650;user-select:none}
-    .check-chip input{width:16px;height:16px;accent-color:var(--primary)}
-    .check-chip.pending{color:var(--orange)}.check-chip.progress{color:var(--blue)}.check-chip.done{color:var(--green)}
-    .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
-    .stat{padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:var(--panel);display:flex;align-items:center;justify-content:space-between;min-height:72px}
-    .stat span{color:var(--muted);font-weight:650;font-size:13px}.stat strong{font-size:24px;letter-spacing:-.8px}
-    .stat.total{border-left:4px solid var(--primary)}.stat.pending{border-left:4px solid var(--orange)}.stat.progress{border-left:4px solid var(--blue)}.stat.done{border-left:4px solid var(--green)}
-    .workspace{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(330px,.75fr);gap:14px;align-items:start}
-    .tasks-panel,.actions-panel{overflow:hidden}
-    .panel-head{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-    .panel-title{min-width:0}.panel-title h2{font-size:16px;margin:0}.panel-title p{font-size:12px;color:var(--muted);margin:2px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:680px}
-    .panel-tools{display:flex;gap:7px;flex-wrap:wrap}
-    .table-wrap{overflow:auto;max-height:560px}
-    table{border-collapse:separate;border-spacing:0;width:100%;min-width:900px}
-    th{position:sticky;top:0;z-index:3;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.45px;color:var(--muted);background:#f7f9fa;border-bottom:1px solid var(--border);padding:10px 12px}
-    td{border-bottom:1px solid #edf1f3;padding:10px 12px;font-size:13px;vertical-align:middle}
-    tr.task-row{transition:.12s ease} tr.task-row:hover{background:#fbfdfd} tr.task-row.active{background:#eef6f8}
-    .sel{width:38px;text-align:center}.sel input{width:17px;height:17px;accent-color:var(--primary)}
-    .task-title{font-weight:700;max-width:340px}.task-note{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px}
-    .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:750;white-space:nowrap}
-    .badge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
-    .badge.pending{background:var(--orange-soft);color:var(--orange)}.badge.progress{background:var(--blue-soft);color:var(--blue)}.badge.done{background:var(--green-soft);color:var(--green)}.badge.none{background:#f0f3f4;color:#66737a}
-    .priority{font-weight:700;font-size:12px}.priority.Alta{color:var(--red)}.priority.Média{color:var(--orange)}.priority.Baixa{color:var(--green)}
-    .progress-cell{min-width:135px}.progress-line{display:flex;align-items:center;gap:8px}.bar{height:7px;flex:1;background:#e9eef0;border-radius:999px;overflow:hidden;min-width:70px}.bar>span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--primary),#3d8ea0)}
-    .progress-value{font-size:11px;color:var(--muted);min-width:34px;text-align:right}
-    .next{max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#4b5961}
-    .row-actions{display:flex;gap:4px;justify-content:flex-end}.icon-btn{border:1px solid var(--border);background:#fff;border-radius:8px;width:32px;height:32px;color:var(--muted);display:grid;place-items:center}.icon-btn:hover{color:var(--primary);border-color:#c7dde2}
-    .empty{padding:46px 22px;text-align:center;color:var(--muted)}.empty strong{display:block;color:var(--text);font-size:15px;margin-bottom:4px}
-    .actions-body{padding:12px}
-    .action-list{display:flex;flex-direction:column;gap:8px}
-    .action-item{border:1px solid var(--border);border-radius:12px;padding:11px;display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:10px;align-items:center;background:#fff}
-    .action-item.pending{border-left:4px solid var(--orange);background:#fffaf5}.action-item.in_progress{border-left:4px solid var(--blue);background:#f8faff}.action-item.completed{border-left:4px solid var(--green);background:#f8fdf9}
-    .status-select{border:1px solid var(--border);border-radius:9px;padding:7px 8px;background:#fff;font-size:12px;font-weight:700;width:100%}
-    .action-text{font-size:13px;font-weight:650;min-width:0;word-break:break-word}
-    .action-buttons{display:flex;gap:4px}
-    .legend{display:flex;gap:10px;flex-wrap:wrap;padding:0 12px 12px;color:var(--muted);font-size:11px}.legend span{display:inline-flex;align-items:center;gap:5px}.dot{width:8px;height:8px;border-radius:50%}.dot.o{background:var(--orange)}.dot.b{background:var(--blue)}.dot.g{background:var(--green)}
-    .mobile-tasks{display:none;padding:10px}.task-card{border:1px solid var(--border);border-radius:13px;padding:12px;margin-bottom:8px;background:#fff}.task-card.active{border-color:#b8d9e0;background:#f5fbfc}.task-card-top{display:flex;gap:9px;align-items:flex-start}.task-card-main{flex:1;min-width:0}.task-card-title{font-weight:750}.task-card-meta{color:var(--muted);font-size:11px;margin-top:2px}.task-card-bottom{display:flex;gap:7px;align-items:center;justify-content:space-between;margin-top:10px;flex-wrap:wrap}
-    dialog{border:none;padding:0;border-radius:18px;box-shadow:0 22px 70px rgba(16,38,46,.26);width:min(620px,calc(100% - 28px));max-height:90vh;overflow:auto;background:#fff;color:var(--text)}
-    dialog::backdrop{background:rgba(11,30,36,.45);backdrop-filter:blur(3px)}
-    .modal-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}.modal-head h3{margin:0;font-size:18px}.modal-head p{margin:2px 0 0;color:var(--muted);font-size:12px}.modal-body{padding:18px 20px}.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.modal-grid .full{grid-column:1/-1}.modal-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;position:sticky;bottom:0;background:#fff}
-    .close-x{border:none;background:#f1f4f5;width:34px;height:34px;border-radius:50%;font-size:18px;color:var(--muted)}
-    .whatsapp-preview{white-space:pre-wrap;border:1px solid var(--border);background:#f8fbfa;border-radius:12px;padding:14px;min-height:240px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;overflow:auto}
-    .notice{padding:11px 12px;border-radius:11px;background:var(--primary-soft);border:1px solid #d3e8ed;color:#315963;font-size:12px;margin-bottom:12px}
-    .toast-wrap{position:fixed;right:18px;bottom:18px;z-index:60;display:flex;flex-direction:column;gap:8px}.toast{background:#152126;color:#fff;padding:11px 14px;border-radius:11px;box-shadow:var(--shadow);font-size:13px;animation:toastIn .18s ease}.toast.success{background:#155f42}.toast.error{background:#9d261c}@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-    .fab{display:none;position:fixed;right:18px;bottom:20px;z-index:18;border:none;width:54px;height:54px;border-radius:50%;background:var(--primary);color:#fff;font-size:24px;box-shadow:0 12px 28px rgba(15,76,92,.3)}
-    .hidden{display:none!important}
-    @media(max-width:1050px){.workspace{grid-template-columns:1fr}.actions-panel{position:static}.table-wrap{max-height:470px}}
-    @media(max-width:760px){
-      .topbar-inner{padding:13px 14px}.brand h1{font-size:18px}.brand p{display:none}.logo{width:36px;height:36px}.top-actions .btn:not(.btn-primary){display:none}.container{padding:12px 12px 90px}.filters{padding:12px}.filter-grid{grid-template-columns:1fr 1fr}.filter-grid .search-field{grid-column:1/-1}.filter-actions{grid-column:1/-1}.summary{grid-template-columns:1fr 1fr;gap:8px}.stat{min-height:58px;padding:10px 12px}.stat strong{font-size:20px}.desktop-table{display:none}.mobile-tasks{display:block}.panel-tools{width:100%}.panel-tools .btn{flex:1}.actions-panel .panel-tools{width:auto}.fab{display:grid;place-items:center}.top-actions .btn-primary{display:none}.modal-grid{grid-template-columns:1fr}.modal-grid .full{grid-column:auto}.modal-foot{flex-wrap:wrap}.modal-foot .btn{flex:1}.action-item{grid-template-columns:1fr auto}.action-item .status-select{grid-column:1/-1}.status-filters{gap:6px}.check-chip{padding:6px 8px;font-size:12px}
-    }
-    @media(max-width:430px){.summary{grid-template-columns:1fr 1fr}.filter-grid{grid-template-columns:1fr}.search-field{grid-column:auto!important}.filter-actions{grid-column:auto}.task-card-bottom{align-items:flex-start}.actions-panel .panel-head{align-items:flex-start}.actions-panel .panel-tools{width:100%}.actions-panel .panel-tools .btn{flex:1}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f4c5c">
+<title>OrganizaDia</title>
+<style>
+:root{--bg:#f5f7f8;--panel:#fff;--text:#182126;--muted:#6b7780;--border:#dfe7ea;--primary:#0f4c5c;--primary2:#14697d;--green:#18794e;--red:#b42318;--shadow:0 14px 40px rgba(30,54,62,.12)}*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}button,input{font:inherit}.hidden{display:none!important}.auth-wrap{min-height:100%;display:grid;place-items:center;padding:24px;background:linear-gradient(135deg,#eef6f8,#f8fbfb)}.auth-card{width:min(440px,100%);background:var(--panel);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow);padding:26px}.brand{display:flex;gap:12px;align-items:center;margin-bottom:20px}.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--primary2));display:grid;place-items:center;color:#fff;font-weight:800}.brand h1{font-size:22px;margin:0}.brand p{margin:2px 0 0;color:var(--muted);font-size:13px}.field{margin:12px 0}.field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px}.input{width:100%;border:1px solid var(--border);border-radius:11px;padding:11px 12px;min-height:44px}.row{display:flex;gap:9px;margin-top:14px}.btn{flex:1;border:1px solid var(--border);border-radius:11px;padding:11px 14px;background:#fff;font-weight:700;cursor:pointer}.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}.btn:hover{filter:brightness(.98)}.msg{margin-top:12px;font-size:13px;color:var(--muted);line-height:1.45}.msg.error{color:var(--red)}.app-shell{height:100%;position:relative}.app-frame{width:100%;height:100%;border:0;display:block;background:#fff}.sync-pill{position:fixed;left:12px;bottom:12px;z-index:9999;background:rgba(24,33,38,.92);color:#fff;border-radius:999px;padding:8px 10px;font-size:12px;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(0,0,0,.18)}.dot{width:8px;height:8px;border-radius:50%;background:#e0a11a}.dot.ok{background:#43b581}.sync-pill button{border:0;background:transparent;color:#fff;text-decoration:underline;cursor:pointer;font-size:12px;padding:0}@media(max-width:640px){.sync-pill{left:8px;bottom:8px;max-width:calc(100% - 16px)}}
+</style>
 </head>
 <body>
-<div class="app" id="app">
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand"><div class="logo">OD</div><div><h1>OrganizaDia Web</h1><p>Tarefas diárias, ações e progresso</p></div></div>
-      <div class="top-actions">
-        <button class="btn btn-ghost" id="btnBackup">Backup</button>
-        <button class="btn btn-green" id="btnWhatsApp">WhatsApp</button>
-        <button class="btn btn-soft" id="btnShareCsv">CSV → WhatsApp</button>
-        <button class="btn btn-primary" id="btnNewTask">+ Nova tarefa</button>
-      </div>
-    </div>
-  </header>
-
-  <main class="container">
-    <section class="panel filters" aria-label="Filtros">
-      <div class="filter-grid">
-        <div class="field"><label for="filterDate">Data</label><input class="input" id="filterDate" type="date"></div>
-        <div class="field search-field"><label for="filterSearch">Buscar</label><input class="input" id="filterSearch" type="search" placeholder="Tarefa, observação ou ação"></div>
-        <div class="filter-actions">
-          <button class="btn btn-soft" id="btnToday">Hoje</button>
-          <button class="btn btn-ghost" id="btnClearFilters">Limpar filtros</button>
-        </div>
-      </div>
-      <div class="status-filters">
-        <label class="check-chip"><input type="checkbox" class="status-filter" value="none" checked> Sem ações</label>
-        <label class="check-chip pending"><input type="checkbox" class="status-filter" value="pending" checked> Pendente</label>
-        <label class="check-chip progress"><input type="checkbox" class="status-filter" value="in_progress" checked> Em andamento</label>
-        <label class="check-chip done"><input type="checkbox" class="status-filter" value="completed" checked> Concluída</label>
-        <label class="check-chip"><input type="checkbox" id="filterSelectedOnly"> Somente marcadas</label>
-      </div>
-    </section>
-
-    <section class="summary" aria-label="Resumo">
-      <div class="stat total"><span>Total</span><strong id="statTotal">0</strong></div>
-      <div class="stat pending"><span>Pendentes</span><strong id="statPending">0</strong></div>
-      <div class="stat progress"><span>Em andamento</span><strong id="statProgress">0</strong></div>
-      <div class="stat done"><span>Concluídas</span><strong id="statDone">0</strong></div>
-    </section>
-
-    <section class="workspace">
-      <section class="panel tasks-panel">
-        <div class="panel-head">
-          <div class="panel-title"><h2>Tarefas</h2><p id="selectionText">0 selecionadas</p></div>
-          <div class="panel-tools">
-            <button class="btn btn-sm btn-soft" id="btnSelectVisible">Marcar visíveis</button>
-            <button class="btn btn-sm btn-ghost" id="btnClearSelection">Limpar seleção</button>
-            <button class="btn btn-sm btn-ghost" id="btnCsv">Baixar CSV</button>
-            <button class="btn btn-sm btn-green" id="btnShareCsvPanel">CSV → WhatsApp</button>
-          </div>
-        </div>
-        <div class="desktop-table table-wrap">
-          <table>
-            <thead><tr><th class="sel">✓</th><th>Data</th><th>Tarefa</th><th>Prioridade</th><th>Progresso</th><th>Status</th><th>Próxima etapa</th><th></th></tr></thead>
-            <tbody id="taskTableBody"></tbody>
-          </table>
-          <div class="empty hidden" id="emptyDesktop"><strong>Nenhuma tarefa encontrada</strong>Ajuste os filtros ou crie uma nova tarefa.</div>
-        </div>
-        <div class="mobile-tasks" id="mobileTasks"></div>
-      </section>
-
-      <aside class="panel actions-panel">
-        <div class="panel-head">
-          <div class="panel-title"><h2>Ações da tarefa</h2><p id="activeTaskSubtitle">Selecione uma tarefa</p></div>
-          <div class="panel-tools"><button class="btn btn-sm btn-primary" id="btnNewAction" disabled>+ Nova ação</button></div>
-        </div>
-        <div class="actions-body"><div class="action-list" id="actionList"></div><div class="empty" id="actionEmpty"><strong>Nenhuma tarefa selecionada</strong>Clique em uma tarefa para ver suas ações.</div></div>
-        <div class="legend"><span><i class="dot o"></i>Pendente</span><span><i class="dot b"></i>Em andamento</span><span><i class="dot g"></i>Concluída</span></div>
-      </aside>
-    </section>
-  </main>
-  <button class="fab" id="fabNewTask" aria-label="Nova tarefa">+</button>
-</div>
-
-<dialog id="taskDialog">
-  <form id="taskForm" method="dialog">
-    <div class="modal-head"><div><h3 id="taskDialogTitle">Nova tarefa</h3><p>Cadastre a tarefa e organize suas etapas depois.</p></div><button type="button" class="close-x" data-close="taskDialog">×</button></div>
-    <div class="modal-body"><div class="modal-grid">
-      <div class="field"><label for="taskDate">Data</label><input class="input" id="taskDate" type="date" required></div>
-      <div class="field"><label for="taskPriority">Prioridade</label><select class="select" id="taskPriority"><option>Alta</option><option selected>Média</option><option>Baixa</option></select></div>
-      <div class="field full"><label for="taskTitle">Tarefa</label><input class="input" id="taskTitle" maxlength="120" required placeholder="Ex.: Preparar materiais do evento"></div>
-      <div class="field full"><label for="taskNotes">Observações</label><textarea class="textarea" id="taskNotes" maxlength="1000" placeholder="Informações importantes, contatos, detalhes..."></textarea></div>
-    </div></div>
-    <div class="modal-foot"><button type="button" class="btn btn-ghost" data-close="taskDialog">Cancelar</button><button type="submit" class="btn btn-primary">Salvar tarefa</button></div>
-  </form>
-</dialog>
-
-<dialog id="actionDialog">
-  <form id="actionForm" method="dialog">
-    <div class="modal-head"><div><h3 id="actionDialogTitle">Nova ação</h3><p>Defina o andamento desta etapa.</p></div><button type="button" class="close-x" data-close="actionDialog">×</button></div>
-    <div class="modal-body"><div class="modal-grid">
-      <div class="field full"><label for="actionTitle">Ação / etapa</label><input class="input" id="actionTitle" maxlength="160" required placeholder="Ex.: Conferir material para impressão"></div>
-      <div class="field full"><label for="actionStatus">Status</label><select class="select" id="actionStatus"><option value="pending">Pendente</option><option value="in_progress">Em andamento</option><option value="completed">Concluída</option></select></div>
-    </div></div>
-    <div class="modal-foot"><button type="button" class="btn btn-ghost" data-close="actionDialog">Cancelar</button><button type="submit" class="btn btn-primary">Salvar ação</button></div>
-  </form>
-</dialog>
-
-<dialog id="whatsappDialog">
-  <div class="modal-head"><div><h3>Compartilhar no WhatsApp</h3><p>Use as tarefas marcadas; se não houver nenhuma, usa as tarefas visíveis.</p></div><button type="button" class="close-x" data-close="whatsappDialog">×</button></div>
-  <div class="modal-body">
-    <div class="notice">A versão Web prepara a mensagem e também pode gerar um arquivo CSV. Em celulares compatíveis, o CSV abre no menu de compartilhamento para você escolher o WhatsApp. No computador, o arquivo é baixado para ser anexado no WhatsApp Web.</div>
-    <div class="field" style="margin-bottom:12px"><label for="waNumber">Número (opcional)</label><input class="input" id="waNumber" inputmode="tel" placeholder="Ex.: 5517999999999"><small style="color:var(--muted)">Com DDI e DDD, somente números.</small></div>
-    <div class="field"><label>Prévia</label><div class="whatsapp-preview" id="waPreview"></div></div>
+<section id="auth" class="auth-wrap">
+  <div class="auth-card">
+    <div class="brand"><div class="logo">OD</div><div><h1>OrganizaDia</h1><p>Entre para sincronizar PC e celular</p></div></div>
+    <div class="field"><label for="email">E-mail</label><input id="email" class="input" type="email" autocomplete="email" placeholder="seuemail@exemplo.com"></div>
+    <div class="field"><label for="password">Senha</label><input id="password" class="input" type="password" autocomplete="current-password" minlength="6" placeholder="mínimo 6 caracteres"></div>
+    <div class="row"><button id="login" class="btn btn-primary">Entrar</button><button id="signup" class="btn">Criar conta</button></div>
+    <div id="message" class="msg">Use a mesma conta no computador e no celular para ver as mesmas tarefas.</div>
   </div>
-  <div class="modal-foot"><button type="button" class="btn btn-ghost" id="btnCopyWa">Copiar texto</button><button type="button" class="btn btn-soft" id="btnShareCsvDialog">Compartilhar CSV</button><button type="button" class="btn btn-green" id="btnOpenWa">Abrir WhatsApp</button></div>
-</dialog>
-
-<dialog id="backupDialog">
-  <div class="modal-head"><div><h3>Backup e dados</h3><p>Leve suas tarefas para outro navegador ou computador.</p></div><button type="button" class="close-x" data-close="backupDialog">×</button></div>
-  <div class="modal-body">
-    <div class="notice">Os dados desta versão ficam armazenados no navegador deste dispositivo. Faça backup regularmente se as tarefas forem importantes.</div>
-    <div style="display:grid;gap:10px">
-      <button type="button" class="btn btn-primary" id="btnExportJson">Baixar backup JSON</button>
-      <label class="btn btn-ghost" style="cursor:pointer">Importar backup JSON<input id="importJson" type="file" accept="application/json,.json" hidden></label>
-      <button type="button" class="btn btn-ghost" id="btnExportTxt">Baixar resumo em TXT</button>
-      <button type="button" class="btn btn-danger" id="btnResetData">Apagar todos os dados</button>
-    </div>
-  </div>
-</dialog>
-
-<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
-
-<script>
-(() => {
-  'use strict';
-  const STORAGE_KEY = 'organizaDiaWeb.v1';
-  const STATUS_LABEL = {none:'Sem ações', pending:'Pendente', in_progress:'Em andamento', completed:'Concluída'};
-  const ACTION_LABEL = {pending:'Pendente', in_progress:'Em andamento', completed:'Concluída'};
-  const STATUS_CLASS = {none:'none', pending:'pending', in_progress:'progress', completed:'done'};
-  const $ = (s, root=document) => root.querySelector(s);
-  const $$ = (s, root=document) => [...root.querySelectorAll(s)];
-  const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)+Math.random().toString(36).slice(2));
-  const todayISO = () => { const d=new Date(); const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${day}`; };
-  const fmtDate = (iso) => { if(!iso) return ''; const [y,m,d]=iso.split('-'); return `${d}/${m}/${y}`; };
-  const esc = (s='') => String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-
-  let state = loadState();
-  let activeTaskId = state.tasks[0]?.id || null;
-  let editingTaskId = null;
-  let editingActionId = null;
-
-  function loadState(){
-    try{
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if(!raw) return {version:1,tasks:[],settings:{whatsappNumber:''}};
-      const parsed = JSON.parse(raw);
-      if(!Array.isArray(parsed.tasks)) throw new Error('dados inválidos');
-      parsed.settings ||= {whatsappNumber:''};
-      parsed.tasks.forEach(t => { t.selected = !!t.selected; t.actions = Array.isArray(t.actions) ? t.actions : []; });
-      return parsed;
-    }catch(e){ console.error(e); return {version:1,tasks:[],settings:{whatsappNumber:''}}; }
-  }
-  function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-  function toast(msg,type='success'){ const el=document.createElement('div'); el.className=`toast ${type}`; el.textContent=msg; $('#toastWrap').appendChild(el); setTimeout(()=>el.remove(),2800); }
-
-  function actionValue(status){ return status==='completed'?100:status==='in_progress'?50:0; }
-  function taskProgress(task){ if(!task.actions.length) return 0; return Math.round(task.actions.reduce((s,a)=>s+actionValue(a.status),0)/task.actions.length); }
-  function taskStatus(task){
-    if(!task.actions.length) return 'none';
-    if(task.actions.every(a=>a.status==='completed')) return 'completed';
-    if(task.actions.some(a=>a.status==='in_progress') || task.actions.some(a=>a.status==='completed')) return 'in_progress';
-    return 'pending';
-  }
-  function nextAction(task){ return task.actions.find(a=>a.status!=='completed')?.title || (task.actions.length?'Tudo concluído':'Cadastre as ações'); }
-
-  function getFilters(){
-    const statuses = new Set($$('.status-filter:checked').map(x=>x.value));
-    return {date:$('#filterDate').value, search:$('#filterSearch').value.trim().toLowerCase(), statuses, selectedOnly:$('#filterSelectedOnly').checked};
-  }
-  function visibleTasks(){
-    const f=getFilters();
-    return state.tasks.filter(t=>{
-      const st=taskStatus(t);
-      if(!f.statuses.has(st)) return false;
-      if(f.date && t.date!==f.date) return false;
-      if(f.selectedOnly && !t.selected) return false;
-      if(f.search){
-        const hay=[t.title,t.notes,...t.actions.map(a=>a.title)].join(' ').toLowerCase();
-        if(!hay.includes(f.search)) return false;
-      }
-      return true;
-    }).sort((a,b)=> b.date.localeCompare(a.date) || ({Alta:0,Média:1,Baixa:2}[a.priority]-({Alta:0,Média:1,Baixa:2}[b.priority])) || b.createdAt.localeCompare(a.createdAt));
-  }
-
-  function render(){
-    const tasks=visibleTasks();
-    renderStats(tasks); renderTasks(tasks); renderActions(); renderSelection();
-  }
-  function renderStats(tasks){
-    const counts={pending:0,in_progress:0,completed:0,none:0}; tasks.forEach(t=>counts[taskStatus(t)]++);
-    $('#statTotal').textContent=tasks.length;
-    $('#statPending').textContent=counts.pending+counts.none;
-    $('#statProgress').textContent=counts.in_progress;
-    $('#statDone').textContent=counts.completed;
-  }
-  function renderSelection(){ const n=state.tasks.filter(t=>t.selected).length; $('#selectionText').textContent=`${n} selecionada${n===1?'':'s'}`; }
-
-  function taskRowHtml(t){
-    const p=taskProgress(t), st=taskStatus(t); const active=t.id===activeTaskId?' active':'';
-    return `<tr class="task-row${active}" data-task-id="${t.id}">
-      <td class="sel"><input class="task-check" type="checkbox" aria-label="Selecionar ${esc(t.title)}" ${t.selected?'checked':''}></td>
-      <td>${fmtDate(t.date)}</td>
-      <td><div class="task-title">${esc(t.title)}</div>${t.notes?`<div class="task-note">${esc(t.notes)}</div>`:''}</td>
-      <td><span class="priority ${esc(t.priority)}">${esc(t.priority)}</span></td>
-      <td class="progress-cell"><div class="progress-line"><div class="bar"><span style="width:${p}%"></span></div><span class="progress-value">${p}%</span></div></td>
-      <td><span class="badge ${STATUS_CLASS[st]}">${STATUS_LABEL[st]}</span></td>
-      <td><div class="next" title="${esc(nextAction(t))}">${esc(nextAction(t))}</div></td>
-      <td><div class="row-actions"><button class="icon-btn edit-task" title="Editar" aria-label="Editar">✎</button><button class="icon-btn delete-task" title="Excluir" aria-label="Excluir">×</button></div></td>
-    </tr>`;
-  }
-  function taskCardHtml(t){
-    const p=taskProgress(t), st=taskStatus(t); const active=t.id===activeTaskId?' active':'';
-    return `<article class="task-card${active}" data-task-id="${t.id}">
-      <div class="task-card-top"><input class="task-check" type="checkbox" aria-label="Selecionar ${esc(t.title)}" ${t.selected?'checked':''}><div class="task-card-main"><div class="task-card-title">${esc(t.title)}</div><div class="task-card-meta">${fmtDate(t.date)} · ${esc(t.priority)} · ${p}%</div></div><span class="badge ${STATUS_CLASS[st]}">${STATUS_LABEL[st]}</span></div>
-      <div class="task-card-bottom"><span class="next">${esc(nextAction(t))}</span><div class="row-actions"><button class="icon-btn edit-task" aria-label="Editar">✎</button><button class="icon-btn delete-task" aria-label="Excluir">×</button></div></div>
-    </article>`;
-  }
-  function renderTasks(tasks){
-    $('#taskTableBody').innerHTML=tasks.map(taskRowHtml).join('');
-    $('#mobileTasks').innerHTML=tasks.length?tasks.map(taskCardHtml).join(''):`<div class="empty"><strong>Nenhuma tarefa encontrada</strong>Ajuste os filtros ou crie uma nova tarefa.</div>`;
-    $('#emptyDesktop').classList.toggle('hidden',tasks.length>0);
-  }
-  function renderActions(){
-    const t=state.tasks.find(x=>x.id===activeTaskId);
-    const list=$('#actionList'), empty=$('#actionEmpty'), btn=$('#btnNewAction');
-    if(!t){ $('#activeTaskSubtitle').textContent='Selecione uma tarefa'; list.innerHTML=''; empty.classList.remove('hidden'); btn.disabled=true; return; }
-    btn.disabled=false;
-    $('#activeTaskSubtitle').textContent=`${t.title} · ${STATUS_LABEL[taskStatus(t)]} · ${taskProgress(t)}%`;
-    if(!t.actions.length){ list.innerHTML=''; empty.innerHTML='<strong>Nenhuma ação cadastrada</strong>Crie a primeira etapa desta tarefa.'; empty.classList.remove('hidden'); return; }
-    empty.classList.add('hidden');
-    list.innerHTML=t.actions.map(a=>`<div class="action-item ${a.status}" data-action-id="${a.id}">
-      <select class="status-select action-status" aria-label="Status de ${esc(a.title)}"><option value="pending" ${a.status==='pending'?'selected':''}>Pendente</option><option value="in_progress" ${a.status==='in_progress'?'selected':''}>Em andamento</option><option value="completed" ${a.status==='completed'?'selected':''}>Concluída</option></select>
-      <div class="action-text">${esc(a.title)}</div><div class="action-buttons"><button class="icon-btn edit-action" aria-label="Editar ação">✎</button><button class="icon-btn delete-action" aria-label="Excluir ação">×</button></div>
-    </div>`).join('');
-  }
-
-  function openTaskDialog(task=null){
-    editingTaskId=task?.id || null; $('#taskDialogTitle').textContent=task?'Editar tarefa':'Nova tarefa';
-    $('#taskDate').value=task?.date || todayISO(); $('#taskPriority').value=task?.priority || 'Média'; $('#taskTitle').value=task?.title || ''; $('#taskNotes').value=task?.notes || ''; $('#taskDialog').showModal(); setTimeout(()=>$('#taskTitle').focus(),40);
-  }
-  function openActionDialog(action=null){
-    if(!activeTaskId){toast('Selecione uma tarefa primeiro','error');return;}
-    editingActionId=action?.id || null; $('#actionDialogTitle').textContent=action?'Editar ação':'Nova ação'; $('#actionTitle').value=action?.title || ''; $('#actionStatus').value=action?.status || 'pending'; $('#actionDialog').showModal(); setTimeout(()=>$('#actionTitle').focus(),40);
-  }
-  function closeDialog(id){ const d=document.getElementById(id); if(d?.open)d.close(); }
-
-  function deleteTask(id){ const t=state.tasks.find(x=>x.id===id); if(!t)return; if(!confirm(`Excluir a tarefa “${t.title}” e todas as ações?`))return; state.tasks=state.tasks.filter(x=>x.id!==id); if(activeTaskId===id)activeTaskId=state.tasks[0]?.id||null; saveState(); render(); toast('Tarefa excluída'); }
-  function deleteAction(id){ const t=state.tasks.find(x=>x.id===activeTaskId); const a=t?.actions.find(x=>x.id===id); if(!a)return; if(!confirm(`Excluir a ação “${a.title}”?`))return; t.actions=t.actions.filter(x=>x.id!==id); saveState(); render(); toast('Ação excluída'); }
-
-  function shareSourceTasks(){ const selected=state.tasks.filter(t=>t.selected); return selected.length?selected:visibleTasks(); }
-  function whatsappText(){
-    const tasks=shareSourceTasks(); const lines=[`*OrganizaDia — ${fmtDate(todayISO())}*`, ''];
-    if(!tasks.length) return '*OrganizaDia*\n\nNenhuma tarefa encontrada com os filtros atuais.';
-    tasks.forEach((t,i)=>{ const st=taskStatus(t), p=taskProgress(t); const icon=st==='completed'?'✅':st==='in_progress'?'🟦':'⬜'; lines.push(`${icon} *${i+1}. ${t.title}*`); lines.push(`Data: ${fmtDate(t.date)} | Prioridade: ${t.priority} | ${STATUS_LABEL[st]} | ${p}%`); const open=t.actions.filter(a=>a.status!=='completed'); if(open.length){ open.forEach(a=>lines.push(`   ${a.status==='in_progress'?'🟦':'⬜'} ${a.title} — ${ACTION_LABEL[a.status]}`)); } else if(!t.actions.length){ lines.push('   ⬜ Sem ações cadastradas'); } if(t.notes) lines.push(`   Obs.: ${t.notes}`); lines.push(''); });
-    const done=tasks.filter(t=>taskStatus(t)==='completed').length; lines.push(`*Resumo:* ${done}/${tasks.length} tarefas concluídas.`); return lines.join('\n').trim();
-  }
-  function openWhatsApp(){ $('#waNumber').value=state.settings.whatsappNumber||''; $('#waPreview').textContent=whatsappText(); $('#whatsappDialog').showModal(); }
-  async function copyText(text){ try{ await navigator.clipboard.writeText(text); toast('Texto copiado'); }catch{ const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); toast('Texto copiado'); } }
-  function openWaUrl(){ const text=whatsappText(); const raw=$('#waNumber').value.replace(/\D/g,''); state.settings.whatsappNumber=raw; saveState(); const url=raw?`https://wa.me/${raw}?text=${encodeURIComponent(text)}`:`https://wa.me/?text=${encodeURIComponent(text)}`; window.open(url,'_blank','noopener'); }
-
-  function csvText(){ const rows=[['Data','Tarefa','Prioridade','Progresso','Status','Próxima etapa','Observações']]; shareSourceTasks().forEach(t=>{ rows.push([fmtDate(t.date),t.title,t.priority,`${taskProgress(t)}%`,STATUS_LABEL[taskStatus(t)],nextAction(t),t.notes||'']); t.actions.forEach(a=>rows.push(['',`  - ${a.title}`,'','',ACTION_LABEL[a.status],'',''])); }); return '\ufeff'+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(';')).join('\n'); }
-  function csvFile(){
-    const name=`organiza_dia_${todayISO()}.csv`;
-    return new File([csvText()],name,{type:'text/csv;charset=utf-8'});
-  }
-  async function shareCsvToWhatsApp(){
-    const tasks=shareSourceTasks();
-    if(!tasks.length){ toast('Não há tarefas para gerar o CSV','error'); return; }
-    const file=csvFile();
-    const shareData={
-      files:[file],
-      title:'OrganizaDia — tarefas',
-      text:`Arquivo CSV do OrganizaDia com ${tasks.length} tarefa${tasks.length===1?'':'s'}.`
-    };
-    try{
-      if(navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))){
-        await navigator.share(shareData);
-        toast('CSV preparado para compartilhamento');
-        return;
-      }
-    }catch(err){
-      if(err?.name==='AbortError') return;
-      console.warn('Compartilhamento de arquivo indisponível',err);
+</section>
+<section id="app" class="app-shell hidden">
+  <iframe id="frame" class="app-frame" title="OrganizaDia"></iframe>
+  <div class="sync-pill"><span id="syncDot" class="dot"></span><span id="syncText">Conectando…</span><button id="logout">Sair</button></div>
+</section>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+const SUPABASE_URL='https://vgagtjcqokqveedbrsyl.supabase.co';
+const SUPABASE_KEY='sb_publishable_IOtn-7mF82sBAMPT9U9okA_HYUD2Gm8';
+const supabase=createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const STORAGE_KEY='organizaDiaWeb.v1';
+const $=id=>document.getElementById(id);
+let user=null,lastLocal='',lastRemoteTime='',syncTimer=null,pullTimer=null,appLoaded=false,applyingRemote=false;
+function setMsg(text,error=false){$('message').textContent=text;$('message').className='msg'+(error?' error':'');}
+function setSync(text,ok=false){$('syncText').textContent=text;$('syncDot').className='dot'+(ok?' ok':'');}
+function defaultState(){return {version:1,tasks:[],settings:{whatsappNumber:''}}}
+function localState(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'null')||defaultState()}catch{return defaultState()}}
+function normalizedString(obj){try{return JSON.stringify(obj)}catch{return JSON.stringify(defaultState())}}
+async function saveRemote(state){
+  if(!user||applyingRemote)return;
+  setSync('Salvando…');
+  const now=new Date().toISOString();
+  const {data,error}=await supabase.from('organiza_state').upsert({user_id:user.id,state,updated_at:now},{onConflict:'user_id'}).select('updated_at').single();
+  if(error){console.error(error);setSync('Erro ao sincronizar');return;}
+  lastRemoteTime=data?.updated_at||now;lastLocal=normalizedString(state);setSync('Sincronizado',true);
+}
+async function fetchRemote(){
+  if(!user)return;
+  const {data,error}=await supabase.from('organiza_state').select('state,updated_at').eq('user_id',user.id).maybeSingle();
+  if(error){console.error(error);setSync('Erro ao sincronizar');return null;}
+  return data;
+}
+async function startSync(){
+  const remote=await fetchRemote();
+  const local=localState();
+  if(!remote){
+    await saveRemote(local);
+  }else{
+    const remoteString=normalizedString(remote.state||defaultState());
+    lastRemoteTime=remote.updated_at||'';
+    if(remoteString!==normalizedString(local)){
+      applyingRemote=true;localStorage.setItem(STORAGE_KEY,remoteString);applyingRemote=false;
     }
-    download(file.name,csvText(),'text/csv;charset=utf-8');
-    const raw=(state.settings.whatsappNumber||'').replace(/\D/g,'');
-    const msg='Gerei o arquivo CSV das minhas tarefas no OrganizaDia. Vou anexar o arquivo nesta conversa.';
-    const url=raw?`https://wa.me/${raw}?text=${encodeURIComponent(msg)}`:`https://wa.me/?text=${encodeURIComponent(msg)}`;
-    window.open(url,'_blank','noopener');
-    toast('CSV baixado. Anexe o arquivo na conversa do WhatsApp.');
+    lastLocal=remoteString;
   }
-  function download(name, content, type='text/plain;charset=utf-8'){ const blob=new Blob([content],{type}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }
-
-  $('#taskForm').addEventListener('submit', e=>{
-    e.preventDefault(); const title=$('#taskTitle').value.trim(); if(!title)return;
-    if(editingTaskId){ const t=state.tasks.find(x=>x.id===editingTaskId); Object.assign(t,{date:$('#taskDate').value,priority:$('#taskPriority').value,title,notes:$('#taskNotes').value.trim(),updatedAt:new Date().toISOString()}); toast('Tarefa atualizada'); }
-    else{ const t={id:uid(),date:$('#taskDate').value,priority:$('#taskPriority').value,title,notes:$('#taskNotes').value.trim(),selected:false,actions:[],createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()}; state.tasks.push(t); activeTaskId=t.id; toast('Tarefa criada'); }
-    saveState(); closeDialog('taskDialog'); render();
-  });
-  $('#actionForm').addEventListener('submit', e=>{
-    e.preventDefault(); const t=state.tasks.find(x=>x.id===activeTaskId), title=$('#actionTitle').value.trim(); if(!t||!title)return;
-    if(editingActionId){ const a=t.actions.find(x=>x.id===editingActionId); Object.assign(a,{title,status:$('#actionStatus').value,updatedAt:new Date().toISOString()}); toast('Ação atualizada'); }
-    else{ t.actions.push({id:uid(),title,status:$('#actionStatus').value,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()}); toast('Ação criada'); }
-    t.updatedAt=new Date().toISOString(); saveState(); closeDialog('actionDialog'); render();
-  });
-
-  document.addEventListener('click', e=>{
-    const close=e.target.closest('[data-close]'); if(close){closeDialog(close.dataset.close);return;}
-    const row=e.target.closest('[data-task-id]');
-    if(row && !e.target.closest('button,input')){ activeTaskId=row.dataset.taskId; render(); return; }
-    if(e.target.closest('.edit-task')){ const id=e.target.closest('[data-task-id]').dataset.taskId; openTaskDialog(state.tasks.find(t=>t.id===id)); return; }
-    if(e.target.closest('.delete-task')){ deleteTask(e.target.closest('[data-task-id]').dataset.taskId); return; }
-    if(e.target.closest('.edit-action')){ const id=e.target.closest('[data-action-id]').dataset.actionId; const t=state.tasks.find(x=>x.id===activeTaskId); openActionDialog(t.actions.find(a=>a.id===id)); return; }
-    if(e.target.closest('.delete-action')){ deleteAction(e.target.closest('[data-action-id]').dataset.actionId); return; }
-  });
-  document.addEventListener('change', e=>{
-    if(e.target.matches('.task-check')){ const id=e.target.closest('[data-task-id]').dataset.taskId; const t=state.tasks.find(x=>x.id===id); t.selected=e.target.checked; saveState(); render(); return; }
-    if(e.target.matches('.action-status')){ const id=e.target.closest('[data-action-id]').dataset.actionId; const t=state.tasks.find(x=>x.id===activeTaskId); const a=t.actions.find(x=>x.id===id); a.status=e.target.value; a.updatedAt=new Date().toISOString(); t.updatedAt=new Date().toISOString(); saveState(); render(); toast('Status atualizado'); return; }
-    if(e.target.matches('.status-filter,#filterSelectedOnly')) render();
-  });
-  $('#filterDate').addEventListener('change',render); $('#filterSearch').addEventListener('input',render);
-  $('#btnToday').addEventListener('click',()=>{$('#filterDate').value=todayISO();render();});
-  $('#btnClearFilters').addEventListener('click',()=>{$('#filterDate').value='';$('#filterSearch').value='';$('#filterSelectedOnly').checked=false;$$('.status-filter').forEach(x=>x.checked=true);render();});
-  $('#btnNewTask').addEventListener('click',()=>openTaskDialog()); $('#fabNewTask').addEventListener('click',()=>openTaskDialog()); $('#btnNewAction').addEventListener('click',()=>openActionDialog());
-  $('#btnSelectVisible').addEventListener('click',()=>{visibleTasks().forEach(t=>t.selected=true);saveState();render();});
-  $('#btnClearSelection').addEventListener('click',()=>{state.tasks.forEach(t=>t.selected=false);saveState();render();});
-  $('#btnWhatsApp').addEventListener('click',openWhatsApp); $('#btnOpenWa').addEventListener('click',openWaUrl); $('#btnCopyWa').addEventListener('click',()=>copyText(whatsappText()));
-  $('#btnCsv').addEventListener('click',()=>download(`organiza_dia_${todayISO()}.csv`,csvText(),'text/csv;charset=utf-8'));
-  $('#btnShareCsv').addEventListener('click',shareCsvToWhatsApp); $('#btnShareCsvPanel').addEventListener('click',shareCsvToWhatsApp); $('#btnShareCsvDialog').addEventListener('click',shareCsvToWhatsApp);
-  $('#btnBackup').addEventListener('click',()=>$('#backupDialog').showModal());
-  $('#btnExportJson').addEventListener('click',()=>download(`organiza_dia_backup_${todayISO()}.json`,JSON.stringify(state,null,2),'application/json'));
-  $('#btnExportTxt').addEventListener('click',()=>download(`organiza_dia_resumo_${todayISO()}.txt`,whatsappText()));
-  $('#btnResetData').addEventListener('click',()=>{if(confirm('Apagar permanentemente todas as tarefas deste navegador?')){state={version:1,tasks:[],settings:{whatsappNumber:''}};activeTaskId=null;saveState();closeDialog('backupDialog');render();toast('Dados apagados');}});
-  $('#importJson').addEventListener('change',async e=>{ const file=e.target.files[0]; if(!file)return; try{ const data=JSON.parse(await file.text()); if(!Array.isArray(data.tasks))throw new Error(); if(!confirm(`Importar ${data.tasks.length} tarefa(s) e substituir os dados atuais?`))return; state=data; state.settings ||= {whatsappNumber:''}; state.tasks.forEach(t=>{t.selected=!!t.selected;t.actions=Array.isArray(t.actions)?t.actions:[]});activeTaskId=state.tasks[0]?.id||null;saveState();render();closeDialog('backupDialog');toast('Backup importado'); }catch{toast('Arquivo de backup inválido','error');} finally{e.target.value='';} });
-
-  if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(console.warn);
-  render();
-})();
+  if(!appLoaded){$('frame').src='./app.html';appLoaded=true;}
+  $('auth').classList.add('hidden');$('app').classList.remove('hidden');setSync('Sincronizado',true);
+  clearInterval(syncTimer);clearInterval(pullTimer);
+  syncTimer=setInterval(async()=>{
+    const current=normalizedString(localState());
+    if(current!==lastLocal)await saveRemote(JSON.parse(current));
+  },900);
+  pullTimer=setInterval(async()=>{
+    const r=await fetchRemote();if(!r)return;
+    if(r.updated_at&&r.updated_at!==lastRemoteTime){
+      const rs=normalizedString(r.state||defaultState());
+      if(rs!==normalizedString(localState())){
+        applyingRemote=true;localStorage.setItem(STORAGE_KEY,rs);applyingRemote=false;lastLocal=rs;
+        $('frame').contentWindow?.location.reload();
+      }
+      lastRemoteTime=r.updated_at;setSync('Sincronizado',true);
+    }
+  },4000);
+}
+async function handleSession(session){
+  user=session?.user||null;
+  if(user){await startSync();}else{$('app').classList.add('hidden');$('auth').classList.remove('hidden');}
+}
+$('login').addEventListener('click',async()=>{
+  const email=$('email').value.trim(),password=$('password').value;
+  if(!email||!password){setMsg('Informe e-mail e senha.',true);return;}
+  setMsg('Entrando…');
+  const {data,error}=await supabase.auth.signInWithPassword({email,password});
+  if(error){setMsg('Não foi possível entrar: '+error.message,true);return;}
+  await handleSession(data.session);
+});
+$('signup').addEventListener('click',async()=>{
+  const email=$('email').value.trim(),password=$('password').value;
+  if(!email||password.length<6){setMsg('Informe um e-mail e uma senha com pelo menos 6 caracteres.',true);return;}
+  setMsg('Criando conta…');
+  const {data,error}=await supabase.auth.signUp({email,password});
+  if(error){setMsg('Não foi possível criar a conta: '+error.message,true);return;}
+  if(data.session){await handleSession(data.session);}else{setMsg('Conta criada. Confira seu e-mail e confirme o cadastro; depois volte aqui e clique em Entrar.');}
+});
+$('logout').addEventListener('click',async()=>{clearInterval(syncTimer);clearInterval(pullTimer);await supabase.auth.signOut();location.reload();});
+supabase.auth.onAuthStateChange((_event,session)=>{if(session?.user&&!user)handleSession(session);});
+const {data:{session}}=await supabase.auth.getSession();await handleSession(session);
+if('serviceWorker' in navigator&&location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(console.warn);
 </script>
 </body>
 </html>
